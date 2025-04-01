@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup & Login</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        form { max-width: 300px; margin: auto; }
+        input, button { width: 100%; padding: 10px; margin: 5px 0; }
+    </style>
+</head>
+<body>
+
+    <h2>Sign Up</h2>
+    <form id="signupForm">
+        <input type="text" id="signupUsername" placeholder="Username" required>
+        <input type="text" id="signupMobile" placeholder="Mobile Number" required>
+        <input type="email" id="signupEmail" placeholder="Email ID" required>
+        <input type="password" id="signupPassword" placeholder="New Password" required>
+        <input type="password" id="signupConfirmPassword" placeholder="Confirm Password" required>
+        <input type="text" id="signupSecurityQuestion" placeholder="Security Question" required>
+        <input type="text" id="signupSecurityAnswer" placeholder="Security Answer" required>
+        <button type="submit">Sign Up</button>
+        <p id="signupMessage"></p>
+    </form>
+
+    <h2>Login</h2>
+    <form id="loginForm">
+        <input type="text" id="loginUsername" placeholder="Username" required>
+        <input type="password" id="loginPassword" placeholder="Password" required>
+        <button type="submit">Login</button>
+        <p id="loginMessage"></p>
+    </form>
+
+    <script>
+        document.getElementById("signupForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const data = {
+                username: document.getElementById("signupUsername").value,
+                mobile: document.getElementById("signupMobile").value,
+                email: document.getElementById("signupEmail").value,
+                password: document.getElementById("signupPassword").value,
+                confirmPassword: document.getElementById("signupConfirmPassword").value,
+                securityQuestion: document.getElementById("signupSecurityQuestion").value,
+                securityAnswer: document.getElementById("signupSecurityAnswer").value,
+            };
+
+            const res = await fetch("http://localhost:5000/api/signup", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data),
+            });
+
+            const result = await res.json();
+            document.getElementById("signupMessage").innerText = result.message;
+        });
+
+        document.getElementById("loginForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const data = {
+                username: document.getElementById("loginUsername").value,
+                password: document.getElementById("loginPassword").value,
+            };
+
+            const res = await fetch("http://localhost:5000/api/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data),
+            });
+
+            const result = await res.json();
+            document.getElementById("loginMessage").innerText = result.message;
+        });
+    </script>
+
+</body>
+</html>
